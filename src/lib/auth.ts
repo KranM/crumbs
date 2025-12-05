@@ -14,5 +14,14 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     minPasswordLength: 8,
   },
+  user: {
+    additionalFields: {
+      businessName: {
+        type: "string",
+        required: true,
+        input: true,
+      },
+    },
+  },
   plugins: [admin()],
 });

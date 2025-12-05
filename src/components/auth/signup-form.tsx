@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const signupSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -24,12 +27,14 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<
-    Partial<Record<keyof SignupFormData, string>>
+    Partial<Record<keyof SignupFormData | "root", string>>
   >({});
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -52,8 +57,25 @@ export function SignupForm({
     }
 
     setErrors({});
-    // TODO: Implement signup with better-auth
-    console.log("Signup:", result.data);
+    setIsLoading(true);
+
+    const { error } = await authClient.signUp.email({
+      name: result.data.name,
+      email: result.data.email,
+      password: result.data.password,
+      businessName: result.data.businessName,
+    } as Parameters<typeof authClient.signUp.email>[0]);
+
+    setIsLoading(false);
+
+    if (error) {
+      toast.error(error.message ?? "Something went wrong");
+      setErrors({ root: error.message ?? "Something went wrong" });
+      return;
+    }
+
+    toast.success("Account created! Please wait for admin approval.");
+    router.push("/login");
   };
 
   return (
@@ -145,8 +167,13 @@ export function SignupForm({
                     </p>
                   )}
                 </div>
-                <Button type="submit" className="w-full">
-                  Sign up
+                {errors.root && (
+                  <p className="text-destructive text-center text-sm">
+                    {errors.root}
+                  </p>
+                )}
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Signing up..." : "Sign up"}
                 </Button>
               </div>
               <p className="text-muted-foreground text-center text-sm">
@@ -162,7 +189,7 @@ export function SignupForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <Image
-              src="/CRUMBS Logo.svg"
+              src="/logo.svg"
               alt="CRUMBS Logo"
               width={128}
               height={128}

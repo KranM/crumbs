@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -22,12 +25,14 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<
-    Partial<Record<keyof LoginFormData, string>>
+    Partial<Record<keyof LoginFormData | "root", string>>
   >({});
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -48,8 +53,23 @@ export function LoginForm({
     }
 
     setErrors({});
-    // TODO: Implement login with better-auth
-    console.log("Login:", result.data);
+    setIsLoading(true);
+
+    const { error } = await authClient.signIn.email({
+      email: result.data.email,
+      password: result.data.password,
+    });
+
+    setIsLoading(false);
+
+    if (error) {
+      toast.error(error.message ?? "Invalid email or password");
+      setErrors({ root: error.message ?? "Invalid email or password" });
+      return;
+    }
+
+    toast.success("Logged in successfully!");
+    router.push("/dashboard");
   };
 
   return (
@@ -59,7 +79,7 @@ export function LoginForm({
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Welcome back</h1>
+                <h1 className="text-2xl font-bold">Log in</h1>
                 <p className="text-muted-foreground text-sm text-balance">
                   Log in to your CRUMBS account
                 </p>
@@ -110,8 +130,13 @@ export function LoginForm({
                     </p>
                   )}
                 </div>
-                <Button type="submit" className="w-full">
-                  Log in
+                {errors.root && (
+                  <p className="text-destructive text-center text-sm">
+                    {errors.root}
+                  </p>
+                )}
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Logging in..." : "Log in"}
                 </Button>
               </div>
               <p className="text-muted-foreground text-center text-sm">
@@ -127,7 +152,7 @@ export function LoginForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <Image
-              src="/CRUMBS Logo.svg"
+              src="/logo.svg"
               alt="CRUMBS Logo"
               width={128}
               height={128}
