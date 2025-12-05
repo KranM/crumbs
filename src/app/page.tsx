@@ -12,8 +12,8 @@ export default function Home() {
             <Image
               src="/logo.svg"
               alt="CRUMBS Logo"
-              width={40}
-              height={40}
+              width={32}
+              height={32}
               priority
             />
             <span className="text-foreground text-lg font-bold sm:text-xl">

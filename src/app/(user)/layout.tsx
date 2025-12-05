@@ -33,7 +33,7 @@ export default async function UserLayout({
         <header className="border-b">
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/logo.svg" alt="CRUMBS" width={40} height={40} />
+              <Image src="/logo.svg" alt="CRUMBS" width={32} height={32} />
               <span className="text-xl font-bold">CRUMBS</span>
             </Link>
             <div className="flex items-center gap-2">
