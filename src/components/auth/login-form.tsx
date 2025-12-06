@@ -154,8 +154,8 @@ export function LoginForm({
             <Image
               src="/logo.svg"
               alt="CRUMBS Logo"
-              width={128}
-              height={128}
+              width={256}
+              height={256}
               className="absolute inset-0 m-auto"
             />
           </div>
