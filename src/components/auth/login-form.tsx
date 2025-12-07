@@ -68,8 +68,15 @@ export function LoginForm({
       return;
     }
 
+    const session = await authClient.getSession();
+
     toast.success("Logged in successfully!");
-    router.push("/dashboard");
+
+    if (session.data?.user?.role === "admin") {
+      router.replace("/admin/dashboard");
+    } else {
+      router.replace("/dashboard");
+    }
   };
 
   return (

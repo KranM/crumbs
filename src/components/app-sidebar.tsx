@@ -7,9 +7,11 @@ import {
   Factory,
   LogOut,
   ChevronsUpDown,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import type { LucideIcon } from "lucide-react";
 
 import {
   Sidebar,
@@ -36,7 +38,13 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import CrumbsLogo from "@/components/crumbs-logo";
 
-const navItems = [
+export type NavItem = {
+  title: string;
+  url: string;
+  icon: LucideIcon;
+};
+
+export const userNavItems: NavItem[] = [
   {
     title: "Dashboard",
     url: "/dashboard",
@@ -59,7 +67,24 @@ const navItems = [
   },
 ];
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export const adminNavItems: NavItem[] = [
+  {
+    title: "Dashboard",
+    url: "/admin/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Users",
+    url: "/admin/users",
+    icon: Users,
+  },
+];
+
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  navItems: NavItem[];
+};
+
+export function AppSidebar({ navItems, ...props }: AppSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useSession();
@@ -70,6 +95,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     .join("")
     .toUpperCase()
     .slice(0, 2);
+
+  const headerSubtitle = user.role === "admin" ? "Admin" : user.businessName;
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -87,7 +114,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <CrumbsLogo className="size-8!" />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">CRUMBS</span>
-                  <span className="truncate text-xs">{user.businessName}</span>
+                  <span className="truncate text-xs">{headerSubtitle}</span>
                 </div>
               </Link>
             </SidebarMenuButton>

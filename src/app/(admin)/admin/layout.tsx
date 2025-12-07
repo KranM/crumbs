@@ -7,11 +7,11 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { AppSidebar, userNavItems } from "@/components/app-sidebar";
+import { AppSidebar, adminNavItems } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarBreadcrumb } from "@/components/sidebar-breadcrumb";
 
-export default async function UserLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -24,8 +24,8 @@ export default async function UserLayout({
     redirect("/login");
   }
 
-  if (session.user.role === "admin") {
-    redirect("/admin/dashboard");
+  if (session.user.role !== "admin") {
+    redirect("/dashboard");
   }
 
   const user = {
@@ -34,13 +34,13 @@ export default async function UserLayout({
     email: session.user.email,
     businessName: session.user.businessName,
     image: session.user.image,
-    role: session.user.role ?? "user",
+    role: session.user.role,
   };
 
   return (
     <SessionProvider user={user}>
       <SidebarProvider>
-        <AppSidebar navItems={userNavItems} />
+        <AppSidebar navItems={adminNavItems} />
         <SidebarInset>
           <header className="flex h-12 shrink-0 items-center gap-2 border-b">
             <div className="flex items-center gap-2 px-4">

@@ -8,6 +8,7 @@ type User = {
   email: string;
   businessName?: string;
   image?: string | null;
+  role: string;
 };
 
 type SessionContextType = {

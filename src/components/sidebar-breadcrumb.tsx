@@ -13,6 +13,8 @@ const pageTitles: Record<string, string> = {
   "/inventory": "Inventory",
   "/recipes": "Recipes",
   "/production": "Production",
+  "/admin/dashboard": "Dashboard",
+  "/admin/users": "Users",
 };
 
 export function SidebarBreadcrumb() {

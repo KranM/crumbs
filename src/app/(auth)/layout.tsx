@@ -1,12 +1,27 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import { ModeToggle } from "@/components/mode-toggle";
 import CrumbsLogo from "@/components/crumbs-logo";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (session) {
+    if (session.user.role === "admin") {
+      redirect("/admin/dashboard");
+    } else {
+      redirect("/dashboard");
+    }
+  }
+
   return (
     <div className="bg-background flex min-h-svh flex-col">
       <header className="w-full px-4 py-4">
