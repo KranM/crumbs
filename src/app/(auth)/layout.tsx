@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ModeToggle } from "@/components/mode-toggle";
+import CrumbsLogo from "@/components/crumbs-logo";
 
 export default function AuthLayout({
   children,
@@ -12,13 +12,7 @@ export default function AuthLayout({
       <header className="w-full px-4 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/logo.svg"
-              alt="CRUMBS Logo"
-              width={32}
-              height={32}
-              priority
-            />
+            <CrumbsLogo className="size-8" />
             <span className="text-foreground text-lg font-bold sm:text-xl">
               CRUMBS
             </span>

@@ -9,10 +9,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import CrumbsLogo from "@/components/crumbs-logo";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -151,13 +151,7 @@ export function LoginForm({
             </div>
           </form>
           <div className="bg-muted relative hidden md:block">
-            <Image
-              src="/logo.svg"
-              alt="CRUMBS Logo"
-              width={256}
-              height={256}
-              className="absolute inset-0 m-auto"
-            />
+            <CrumbsLogo className="absolute inset-0 m-auto size-64" />
           </div>
         </CardContent>
       </Card>

@@ -1,6 +1,6 @@
+import CrumbsLogo from "@/components/crumbs-logo";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -9,13 +9,7 @@ export default function Home() {
       <header className="w-full px-4 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/logo.svg"
-              alt="CRUMBS Logo"
-              width={32}
-              height={32}
-              priority
-            />
+            <CrumbsLogo className="size-8" />
             <span className="text-foreground text-lg font-bold sm:text-xl">
               CRUMBS
             </span>
@@ -33,13 +27,7 @@ export default function Home() {
       </header>
 
       <main className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-        <Image
-          src="/logo.svg"
-          alt="CRUMBS Logo"
-          width={140}
-          height={140}
-          className="mb-6"
-        />
+        <CrumbsLogo className="size-32" />
         <p className="text-muted-foreground mb-6 text-lg font-medium italic">
           Because every bit counts
         </p>

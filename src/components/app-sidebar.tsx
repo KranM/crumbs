@@ -8,7 +8,6 @@ import {
   LogOut,
   ChevronsUpDown,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -35,6 +34,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { useSession } from "@/components/session-provider";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import CrumbsLogo from "@/components/crumbs-logo";
 
 const navItems = [
   {
@@ -84,7 +84,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                <Image src="/logo.svg" alt="CRUMBS" width={32} height={32} />
+                <CrumbsLogo className="size-8!" />
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">CRUMBS</span>
                   <span className="truncate text-xs">{user.businessName}</span>
