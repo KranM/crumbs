@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { DataTable } from "@/components/data-table";
-import { getUserColumns } from "./user-columns";
-import { getAdminColumns } from "./admin-columns";
+import { getUserColumns } from "@/components/admin/user-columns";
+import { getAdminColumns } from "@/components/admin/admin-columns";
 import { EditUserDialog } from "@/components/admin/edit-user-dialog";
 import { BanUserDialog } from "@/components/admin/ban-user-dialog";
 import { DeleteUserDialog } from "@/components/admin/delete-user-dialog";
 import { CreateAdminDialog } from "@/components/admin/create-admin-dialog";
 import {
-  listUsers,
   updateUser,
   banUser,
   unbanUser,
@@ -20,45 +19,18 @@ import {
 } from "@/actions/admin";
 import { toast } from "sonner";
 
-type UsersClientProps = {
+type UsersTableProps = {
+  users: UserWithPlan[];
+  admins: UserWithPlan[];
   isSuperAdmin: boolean;
 };
 
-export function UsersClient({ isSuperAdmin }: UsersClientProps) {
-  const [users, setUsers] = useState<UserWithPlan[]>([]);
-  const [admins, setAdmins] = useState<UserWithPlan[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
+export function UsersTable({ users, admins, isSuperAdmin }: UsersTableProps) {
   const [editUser, setEditUser] = useState<UserWithPlan | null>(null);
   const [banUserData, setBanUserData] = useState<UserWithPlan | null>(null);
   const [deleteUserData, setDeleteUserData] = useState<UserWithPlan | null>(
     null,
   );
-
-  const fetchData = useCallback(async () => {
-    try {
-      const { users: allUsers } = await listUsers();
-
-      const regularUsers = allUsers.filter((u) => !u.role || u.role === "user");
-      const adminUsers = allUsers.filter(
-        (u) => u.role === "admin" || u.role === "superadmin",
-      );
-
-      setUsers(regularUsers);
-      if (isSuperAdmin) {
-        setAdmins(adminUsers);
-      }
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-      toast.error("Failed to load users");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isSuperAdmin]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   const handleEditUser = async (data: {
     name: string;
@@ -79,7 +51,6 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
         );
       }
       toast.success("User updated successfully");
-      fetchData();
     } catch (error) {
       console.error("Failed to update user:", error);
       toast.error("Failed to update user");
@@ -91,7 +62,6 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
     try {
       await banUser(banUserData.id, banReason, banExpiresIn);
       toast.success("User banned successfully");
-      fetchData();
     } catch (error) {
       console.error("Failed to ban user:", error);
       toast.error("Failed to ban user");
@@ -102,7 +72,6 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
     try {
       await unbanUser(user.id);
       toast.success("User unbanned successfully");
-      fetchData();
     } catch (error) {
       console.error("Failed to unban user:", error);
       toast.error("Failed to unban user");
@@ -114,7 +83,6 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
     try {
       await deleteUser(deleteUserData.id);
       toast.success("User deleted successfully");
-      fetchData();
     } catch (error) {
       console.error("Failed to delete user:", error);
       toast.error("Failed to delete user");
@@ -129,7 +97,6 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
     try {
       await createAdmin(data.name, data.email, data.password);
       toast.success("Admin created successfully");
-      fetchData();
     } catch (error) {
       console.error("Failed to create admin:", error);
       toast.error("Failed to create admin");
@@ -159,17 +126,11 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
             Manage business users and their subscriptions
           </p>
         </div>
-        {isLoading ? (
-          <div className="flex h-64 items-center justify-center rounded-md border">
-            <p className="text-muted-foreground">Loading business users...</p>
-          </div>
-        ) : (
-          <DataTable
-            columns={userColumns}
-            data={users}
-            searchPlaceholder="Search business users..."
-          />
-        )}
+        <DataTable
+          columns={userColumns}
+          data={users}
+          searchPlaceholder="Search business users..."
+        />
       </div>
 
       {isSuperAdmin && (
@@ -181,33 +142,30 @@ export function UsersClient({ isSuperAdmin }: UsersClientProps) {
             </div>
             <CreateAdminDialog onSave={handleCreateAdmin} />
           </div>
-          {isLoading ? (
-            <div className="flex h-64 items-center justify-center rounded-md border">
-              <p className="text-muted-foreground">Loading admins...</p>
-            </div>
-          ) : (
-            <DataTable
-              columns={adminColumns}
-              data={admins}
-              searchPlaceholder="Search admins..."
-            />
-          )}
+          <DataTable
+            columns={adminColumns}
+            data={admins}
+            searchPlaceholder="Search admins..."
+          />
         </div>
       )}
 
       <EditUserDialog
+        key={editUser?.id}
         user={editUser}
         open={!!editUser}
         onOpenChange={(open) => !open && setEditUser(null)}
         onSave={handleEditUser}
       />
       <BanUserDialog
+        key={banUserData?.id}
         user={banUserData}
         open={!!banUserData}
         onOpenChange={(open) => !open && setBanUserData(null)}
         onConfirm={handleBanUser}
       />
       <DeleteUserDialog
+        key={deleteUserData?.id}
         user={deleteUserData}
         open={!!deleteUserData}
         onOpenChange={(open) => !open && setDeleteUserData(null)}

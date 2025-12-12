@@ -16,9 +16,7 @@ import {
   RecentUsersTableSkeleton,
 } from "@/components/admin/recent-users-table";
 
-async function StatCards() {
-  const session = await requireAdminSession();
-  const isSuperadmin = session.role === "superadmin";
+async function StatCards({ isSuperadmin }: { isSuperadmin: boolean }) {
   const stats = await getAdminDashboardStats(isSuperadmin);
 
   return (
@@ -108,7 +106,7 @@ export default async function AdminDashboardPage() {
         <p className="text-muted-foreground">Admin overview and statistics</p>
       </div>
       <Suspense fallback={<StatCardsSkeleton count={isSuperadmin ? 6 : 4} />}>
-        <StatCards />
+        <StatCards isSuperadmin={isSuperadmin} />
       </Suspense>
       <Suspense fallback={<RecentUsersTableSkeleton />}>
         <RecentUsersTable />

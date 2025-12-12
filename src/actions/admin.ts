@@ -2,6 +2,9 @@
 
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { revalidatePath } from "next/cache";
+
+export type Role = "user" | "admin" | "superadmin";
 
 export type UserWithPlan = {
   id: string;
@@ -85,6 +88,8 @@ export async function updateUser(
     headers: headersList,
   });
 
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/dashboard");
   return result;
 }
 
@@ -104,6 +109,8 @@ export async function banUser(
     headers: headersList,
   });
 
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/dashboard");
   return result;
 }
 
@@ -117,6 +124,8 @@ export async function unbanUser(userId: string) {
     headers: headersList,
   });
 
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/dashboard");
   return result;
 }
 
@@ -130,6 +139,8 @@ export async function deleteUser(userId: string) {
     headers: headersList,
   });
 
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/dashboard");
   return result;
 }
 
@@ -154,22 +165,23 @@ export async function createAdmin(
     headers: headersList,
   });
 
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/dashboard");
   return result;
 }
 
-export async function setUserRole(
-  userId: string,
-  role: "user" | "admin" | "superadmin",
-) {
+export async function setUserRole(userId: string, role: Role) {
   const headersList = await headers();
 
   const result = await auth.api.setRole({
     body: {
       userId,
-      role,
+      role: role as "user" | "admin",
     },
     headers: headersList,
   });
 
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/dashboard");
   return result;
 }
