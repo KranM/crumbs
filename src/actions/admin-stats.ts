@@ -2,7 +2,7 @@
 
 import { db } from "@/db/index";
 import { user } from "@/db/schema/auth";
-import { count, eq, and, or, isNull, ne } from "drizzle-orm";
+import { count, eq, and, or, isNull } from "drizzle-orm";
 
 export type AdminDashboardStats = {
   totalUsers: number;
