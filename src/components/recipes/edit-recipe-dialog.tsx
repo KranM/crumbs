@@ -86,9 +86,17 @@ export function EditRecipeDialog({
       return;
     }
 
-    const allItems = [...ingredients, ...others].filter(
-      (item) => item.inventoryId && item.quantity,
+    const rawItems = [...ingredients, ...others];
+    const incompleteItem = rawItems.find(
+      (item) => !item.inventoryId || !item.quantity,
     );
+
+    if (incompleteItem) {
+      toast.error("Please complete all items (selection and quantity).");
+      return;
+    }
+
+    const allItems = rawItems;
 
     if (allItems.length === 0) {
       toast.error("Please add at least one ingredient or other item.");
