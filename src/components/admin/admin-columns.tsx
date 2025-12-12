@@ -51,7 +51,12 @@ export function getAdminColumns({
         </Button>
       ),
       cell: ({ row }) => (
-        <span className="font-medium">{row.getValue("name")}</span>
+        <span
+          className="block max-w-[200px] truncate font-medium"
+          title={row.getValue("name")}
+        >
+          {row.getValue("name")}
+        </span>
       ),
     },
     {
@@ -65,6 +70,14 @@ export function getAdminColumns({
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      ),
+      cell: ({ row }) => (
+        <span
+          className="block max-w-[250px] truncate"
+          title={row.getValue("email")}
+        >
+          {row.getValue("email")}
+        </span>
       ),
     },
     {

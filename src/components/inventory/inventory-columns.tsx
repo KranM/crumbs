@@ -61,7 +61,12 @@ export function getInventoryColumns({
         </Button>
       ),
       cell: ({ row }) => (
-        <span className="font-medium">{row.getValue("name")}</span>
+        <span
+          className="block max-w-[250px] truncate font-medium"
+          title={row.getValue("name")}
+        >
+          {row.getValue("name")}
+        </span>
       ),
     },
     {
@@ -84,7 +89,14 @@ export function getInventoryColumns({
       id: "supplier",
       accessorFn: (row) => row.supplier ?? "",
       header: "Supplier",
-      cell: ({ row }) => row.getValue("supplier") || "—",
+      cell: ({ row }) => (
+        <span
+          className="block max-w-[200px] truncate"
+          title={row.getValue("supplier") || ""}
+        >
+          {row.getValue("supplier") || "—"}
+        </span>
+      ),
     },
     {
       accessorKey: "purchaseCost",

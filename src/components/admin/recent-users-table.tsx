@@ -51,10 +51,29 @@ export async function RecentUsersTable() {
               users.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">
-                    {user.businessName}
+                    <span
+                      className="block max-w-[220px] truncate"
+                      title={user.businessName}
+                    >
+                      {user.businessName}
+                    </span>
                   </TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <span
+                      className="block max-w-[200px] truncate"
+                      title={user.name}
+                    >
+                      {user.name}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className="block max-w-[250px] truncate"
+                      title={user.email}
+                    >
+                      {user.email}
+                    </span>
+                  </TableCell>
                   <TableCell className="text-center">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </TableCell>

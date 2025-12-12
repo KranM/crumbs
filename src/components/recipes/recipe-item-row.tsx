@@ -56,7 +56,10 @@ export function RecipeItemRow({
             aria-expanded={open}
             className="min-w-0 flex-1 justify-between overflow-hidden"
           >
-            <span className="truncate">
+            <span
+              className="truncate"
+              title={selectedItem ? selectedItem.name : ""}
+            >
               {selectedItem ? selectedItem.name : "Select item..."}
             </span>
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -78,7 +81,9 @@ export function RecipeItemRow({
                     }}
                     className="overflow-hidden"
                   >
-                    <span className="truncate">{inventoryItem.name}</span>
+                    <span className="truncate" title={inventoryItem.name}>
+                      {inventoryItem.name}
+                    </span>
                     <Check
                       className={cn(
                         "ml-auto h-4 w-4 shrink-0",

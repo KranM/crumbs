@@ -56,7 +56,12 @@ export function getUserColumns({
         </Button>
       ),
       cell: ({ row }) => (
-        <span className="font-medium">{row.getValue("businessName")}</span>
+        <span
+          className="block max-w-[220px] truncate font-medium"
+          title={row.getValue("businessName")}
+        >
+          {row.getValue("businessName")}
+        </span>
       ),
     },
     {
@@ -71,6 +76,14 @@ export function getUserColumns({
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
+      cell: ({ row }) => (
+        <span
+          className="block max-w-[200px] truncate"
+          title={row.getValue("name")}
+        >
+          {row.getValue("name")}
+        </span>
+      ),
     },
     {
       accessorKey: "email",
@@ -83,6 +96,14 @@ export function getUserColumns({
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      ),
+      cell: ({ row }) => (
+        <span
+          className="block max-w-[250px] truncate"
+          title={row.getValue("email")}
+        >
+          {row.getValue("email")}
+        </span>
       ),
     },
     {
