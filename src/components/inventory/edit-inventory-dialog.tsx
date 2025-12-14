@@ -135,7 +135,7 @@ export function EditInventoryDialog({
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="food">Food</SelectItem>
+                  <SelectItem value="ingredient">Ingredient</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>

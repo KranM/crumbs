@@ -43,7 +43,7 @@ export function RecipeCosting({ recipe }: RecipeCostingProps) {
     profit,
   } = useMemo(() => {
     const ingredientsCost = recipe.items
-      .filter((item) => item.inventory.category === "food")
+      .filter((item) => item.inventory.category === "ingredient")
       .reduce((sum, item) => {
         const unitCost = calculateUnitCost(
           item.inventory.purchaseCost,

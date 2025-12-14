@@ -49,7 +49,7 @@ export function EditRecipeDialog({
   });
 
   const initialIngredients = recipe.items
-    .filter((item) => item.inventory.category === "food")
+    .filter((item) => item.inventory.category === "ingredient")
     .map((item) => ({
       id: item.id,
       inventoryId: item.inventoryId,
@@ -68,8 +68,8 @@ export function EditRecipeDialog({
     useState<RecipeItemData[]>(initialIngredients);
   const [others, setOthers] = useState<RecipeItemData[]>(initialOthers);
 
-  const foodItems = useMemo(
-    () => inventoryItems.filter((item) => item.category === "food"),
+  const ingredientItems = useMemo(
+    () => inventoryItems.filter((item) => item.category === "ingredient"),
     [inventoryItems],
   );
 
@@ -266,15 +266,15 @@ export function EditRecipeDialog({
                   variant="outline"
                   size="sm"
                   onClick={addIngredient}
-                  disabled={foodItems.length === 0}
+                  disabled={ingredientItems.length === 0}
                 >
                   <Plus className="mr-1 h-3 w-3" />
                   Add
                 </Button>
               </div>
-              {foodItems.length === 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  No food items in inventory. Add some first.
+              {ingredientItems.length === 0 ? (
+                <p className="text-muted-foreground p-2 text-sm">
+                  No ingredient items in inventory. Add some first.
                 </p>
               ) : (
                 <div className="space-y-2">
@@ -282,7 +282,7 @@ export function EditRecipeDialog({
                     <RecipeItemRow
                       key={item.id}
                       item={item}
-                      items={foodItems}
+                      items={ingredientItems}
                       onUpdate={updateIngredient}
                       onRemove={removeIngredient}
                     />

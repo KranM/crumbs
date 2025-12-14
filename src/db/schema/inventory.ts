@@ -10,7 +10,7 @@ export const inventory = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
-    category: text("category").notNull(), // "food" | "other"
+    category: text("category").notNull(), // "ingredient" | "other"
     supplier: text("supplier"),
     purchaseCost: numeric("purchase_cost", {
       precision: 12,

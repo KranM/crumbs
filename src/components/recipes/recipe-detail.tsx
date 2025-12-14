@@ -32,7 +32,7 @@ function formatCurrency(value: number): string {
 
 export function RecipeDetail({ recipe, inventoryItems }: RecipeDetailProps) {
   const ingredients = recipe.items.filter(
-    (item) => item.inventory.category === "food",
+    (item) => item.inventory.category === "ingredient",
   );
   const others = recipe.items.filter(
     (item) => item.inventory.category === "other",
