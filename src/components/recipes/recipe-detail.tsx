@@ -39,9 +39,9 @@ export function RecipeDetail({ recipe, inventoryItems }: RecipeDetailProps) {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-hidden">
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <div className="bg-muted relative aspect-video overflow-hidden rounded-lg">
             {recipe.image ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -57,9 +57,11 @@ export function RecipeDetail({ recipe, inventoryItems }: RecipeDetailProps) {
             )}
           </div>
 
-          <div className="flex items-start justify-between gap-4">
-            <h1 className="text-3xl font-bold">{recipe.name}</h1>
-            <div className="flex gap-2">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <h1 className="text-3xl font-bold wrap-break-word">
+              {recipe.name}
+            </h1>
+            <div className="flex w-full gap-2 max-sm:*:flex-1 sm:w-auto sm:shrink-0">
               <EditRecipeDialog
                 recipe={recipe}
                 inventoryItems={inventoryItems}
@@ -95,7 +97,7 @@ export function RecipeDetail({ recipe, inventoryItems }: RecipeDetailProps) {
                       key={item.id}
                       className="flex items-center justify-between p-3"
                     >
-                      <div>
+                      <div className="min-w-0 wrap-break-word">
                         <span className="font-medium">
                           {item.inventory.name}
                         </span>
@@ -128,7 +130,7 @@ export function RecipeDetail({ recipe, inventoryItems }: RecipeDetailProps) {
                       key={item.id}
                       className="flex items-center justify-between p-3"
                     >
-                      <div>
+                      <div className="min-w-0 wrap-break-word">
                         <span className="font-medium">
                           {item.inventory.name}
                         </span>
