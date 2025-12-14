@@ -181,7 +181,7 @@ export function ProductionBatch({
                                 return { ...prev, [recipe.id]: value };
                               });
                             }}
-                            className="h-8 w-16 [appearance:textfield] text-center font-mono [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            className="h-8 w-16 [appearance:textfield] text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                           />
                           <Button
                             variant="outline"
