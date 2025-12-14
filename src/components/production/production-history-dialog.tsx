@@ -79,8 +79,11 @@ export function ProductionHistoryDialog({
                     className="bg-muted/50 flex items-center justify-between gap-3 rounded-lg p-3"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-medium">
-                        {log.recipeName} × {parseFloat(log.quantity)}
+                      <p className="flex gap-1 font-medium">
+                        <span className="truncate">{log.recipeName}</span>
+                        <span className="shrink-0">
+                          × {parseFloat(log.quantity)}
+                        </span>
                       </p>
                       <p className="text-muted-foreground text-xs">
                         {formatDistanceToNow(new Date(log.createdAt), {
