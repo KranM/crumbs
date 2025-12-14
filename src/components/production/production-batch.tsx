@@ -151,7 +151,7 @@ export function ProductionBatch({
                         <div className="min-w-0 flex-1">
                           <p className="truncate font-medium">{recipe.name}</p>
                           <p className="text-muted-foreground text-xs">
-                            {recipe.items.length} ingredient
+                            {recipe.items.length} item
                             {recipe.items.length !== 1 ? "s" : ""}
                           </p>
                         </div>
